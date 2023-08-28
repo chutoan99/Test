@@ -1,0 +1,2681 @@
+{
+  "swagger": "2.0",
+  "info": {
+    "version": "1.0.0",
+    "title": "SHOPEE API DOCUMENT",
+    "description": "SHOPEE API DOCUMENT",
+    "license": {
+      "name": "ChuToan - Website,  Send email to Truongvanchutoan1999@gmail.com",
+      "url": "https://opensource.org/licenses/MIT"
+    }
+  },
+
+  "host": "https://server-shopee3.onrender.com",
+  "basePath": "/api/client",
+  "tags": [
+    { "name": "Auth", "description": "User authentication and authorization functionality." },
+    { "name": "User", "description": "User information and management." },
+    { "name": "Post", "description": "Management of posts or content." },
+    { "name": "Cart", "description": "Shopping cart functionality for e-commerce applications." },
+    { "name": "Order", "description": "Order management and purchasing process." },
+    { "name": "Like", "description": "Functionality for liking" },
+    { "name": "Search", "description": "Functionality for searching" },
+    { "name": "Banner", "description": "Management of banners and advertisement images." },
+    { "name": "BatchList", "description": "List of items in batches." },
+    { "name": "CategoryTree", "description": "Hierarchical representation of categories." },
+    { "name": "Comment", "description": "User comments and opinions management." },
+    { "name": "FlashSale", "description": "Sales activities with discounted prices for a limited time." },
+    { "name": "Industry", "description": "Industry information." },
+    { "name": "Notification", "description": "User notifications within the application." },
+    { "name": "SearchSuggestion", "description": "Search suggestions for users" },
+    { "name": "Shop", "description": "Shop or business information and management" },
+    { "name": "ShopMall", "description": "Management of shopping malls or commercial centers" },
+    { "name": "TopProduct", "description": "Top or popular product management" },
+    { "name": "Room", "description": "" }
+  ],
+
+  "schemes": ["https"],
+  "consumes": ["application/json"],
+  "produces": ["application/json"],
+  "securityDefinitions": {
+    "Bearer": {
+      "type": "apiKey",
+      "name": "Authorization",
+      "in": "header"
+    }
+  },
+
+  "paths": {
+    "/auth/register": {
+      "post": {
+        "tags": ["Auth"],
+        "summary": "Register a new user",
+        "description": "Registers a new user in the system.",
+        "parameters": [
+          {
+            "in": "body",
+            "name": "body",
+            "description": "User object that contains the registration details",
+            "required": false,
+            "schema": {
+              "required": ["name", "photoUrls"],
+              "properties": {
+                "name": { "type": "string" },
+                "email": { "type": "string", "format": "email" },
+                "password": { "type": "string" }
+              }
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "schema": {
+              "$ref": "#/definitions/User_Response"
+            }
+          },
+          "400": {
+            "description": "Bad Request",
+            "schema": {
+              "$ref": "#/definitions/Response_400"
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "schema": {
+              "$ref": "#/definitions/Response_401"
+            }
+          },
+          "404": {
+            "description": "Not Found",
+            "schema": {
+              "$ref": "#/definitions/Response_404"
+            }
+          },
+          "500": {
+            "description": "Internal Server Error",
+            "schema": {
+              "$ref": "#/definitions/Response_500"
+            }
+          }
+        }
+      }
+    },
+
+    "/auth/login": {
+      "post": {
+        "tags": ["Auth"],
+        "summary": "User login",
+        "description": "Logs in a user with the provided credentials.",
+        "parameters": [
+          {
+            "in": "body",
+            "name": "body",
+            "description": "User object that contains the login credentials",
+            "required": false,
+            "schema": {
+              "required": ["name", "photoUrls"],
+              "properties": {
+                "email": { "type": "string", "format": "email" },
+                "password": { "type": "string" }
+              }
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "schema": {
+              "$ref": "#/definitions/User_Response"
+            }
+          },
+          "400": {
+            "description": "Bad Request",
+            "schema": {
+              "$ref": "#/definitions/Response_400"
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "schema": {
+              "$ref": "#/definitions/Response_401"
+            }
+          },
+          "404": {
+            "description": "Not Found",
+            "schema": {
+              "$ref": "#/definitions/Response_404"
+            }
+          },
+          "500": {
+            "description": "Internal Server Error",
+            "schema": {
+              "$ref": "#/definitions/Response_500"
+            }
+          }
+        }
+      }
+    },
+
+    "/auth/forgotPassword": {
+      "post": {
+        "tags": ["Auth"],
+        "summary": "Forgot password",
+        "description": "Initiates the password recovery process for a user.",
+        "parameters": [
+          {
+            "in": "body",
+            "name": "body",
+            "description": "User object that contains the login credentials",
+            "required": false,
+            "schema": {
+              "required": ["name", "photoUrls"],
+              "properties": {
+                "email": { "type": "string", "format": "email" }
+              }
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success"
+          },
+          "400": {
+            "description": "Bad Request",
+            "schema": {
+              "$ref": "#/definitions/Response_400"
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "schema": {
+              "$ref": "#/definitions/Response_401"
+            }
+          },
+          "404": {
+            "description": "Not Found",
+            "schema": {
+              "$ref": "#/definitions/Response_404"
+            }
+          },
+          "500": {
+            "description": "Internal Server Error",
+            "schema": {
+              "$ref": "#/definitions/Response_500"
+            }
+          }
+        }
+      }
+    },
+
+    "/auth/resetPassword": {
+      "put": {
+        "tags": ["Auth"],
+        "summary": "Reset password",
+        "description": "Resets the password for a user.",
+        "parameters": [
+          {
+            "in": "body",
+            "name": "body",
+            "description": "User object that contains the login credentials",
+            "required": false,
+            "schema": {
+              "required": ["name", "photoUrls"],
+              "properties": {
+                "email": { "type": "string", "format": "email" },
+                "password": { "type": "string" },
+                "token": { "type": "string" }
+              }
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success"
+          },
+          "400": {
+            "description": "Bad Request",
+            "schema": {
+              "$ref": "#/definitions/Response_400"
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "schema": {
+              "$ref": "#/definitions/Response_401"
+            }
+          },
+          "404": {
+            "description": "Not Found",
+            "schema": {
+              "$ref": "#/definitions/Response_404"
+            }
+          },
+          "500": {
+            "description": "Internal Server Error",
+            "schema": {
+              "$ref": "#/definitions/Response_500"
+            }
+          }
+        }
+      }
+    },
+
+    "/auth/refreshToken": {
+      "post": {
+        "tags": ["Auth"],
+        "summary": "Refresh access token",
+        "description": "Generates a new access token using a refresh token.",
+        "responses": {
+          "200": {
+            "description": "Success",
+            "schema": {
+              "$ref": "#/definitions/Product_Response"
+            }
+          },
+          "400": {
+            "description": "Bad Request",
+            "schema": {
+              "$ref": "#/definitions/Response_400"
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "schema": {
+              "$ref": "#/definitions/Response_401"
+            }
+          },
+          "404": {
+            "description": "Not Found",
+            "schema": {
+              "$ref": "#/definitions/Response_404"
+            }
+          },
+          "500": {
+            "description": "Internal Server Error",
+            "schema": {
+              "$ref": "#/definitions/Response_500"
+            }
+          }
+        }
+      }
+    },
+
+    "/auth/logout": {
+      "get": {
+        "tags": ["Auth"],
+        "summary": "User logout",
+        "description": "Logs out the currently authenticated user.",
+        "responses": {
+          "200": {
+            "description": "Success",
+            "schema": {
+              "$ref": "#/definitions/Product_Response"
+            }
+          },
+          "400": {
+            "description": "Bad Request",
+            "schema": {
+              "$ref": "#/definitions/Response_400"
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "schema": {
+              "$ref": "#/definitions/Response_401"
+            }
+          },
+          "404": {
+            "description": "Not Found",
+            "schema": {
+              "$ref": "#/definitions/Response_404"
+            }
+          },
+          "500": {
+            "description": "Internal Server Error",
+            "schema": {
+              "$ref": "#/definitions/Response_500"
+            }
+          }
+        }
+      }
+    },
+
+    "/auth/google": {
+      "post": {
+        "tags": ["Auth"],
+        "summary": "Google login",
+        "description": "Logs in a user using their Google account.",
+        "responses": {
+          "200": {
+            "description": "Success",
+            "schema": {
+              "$ref": "#/definitions/Product_Response"
+            }
+          },
+          "400": {
+            "description": "Bad Request",
+            "schema": {
+              "$ref": "#/definitions/Response_400"
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "schema": {
+              "$ref": "#/definitions/Response_401"
+            }
+          },
+          "404": {
+            "description": "Not Found",
+            "schema": {
+              "$ref": "#/definitions/Response_404"
+            }
+          },
+          "500": {
+            "description": "Internal Server Error",
+            "schema": {
+              "$ref": "#/definitions/Response_500"
+            }
+          }
+        }
+      }
+    },
+
+    "/auth/facebook": {
+      "post": {
+        "tags": ["Auth"],
+        "summary": "Facebook login",
+        "description": "Logs in a user using their Facebook account.",
+        "responses": {
+          "200": {
+            "description": "Success",
+            "schema": {
+              "$ref": "#/definitions/Product_Response"
+            }
+          },
+          "400": {
+            "description": "Bad Request",
+            "schema": {
+              "$ref": "#/definitions/Response_400"
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "schema": {
+              "$ref": "#/definitions/Response_401"
+            }
+          },
+          "404": {
+            "description": "Not Found",
+            "schema": {
+              "$ref": "#/definitions/Response_404"
+            }
+          },
+          "500": {
+            "description": "Internal Server Error",
+            "schema": {
+              "$ref": "#/definitions/Response_500"
+            }
+          }
+        }
+      }
+    },
+
+    "/user/current": {
+      "get": {
+        "tags": ["User"],
+        "summary": "Get all User in system",
+        "security": [{ "Bearer": [] }],
+        "produces": ["application/json"],
+        "responses": {
+          "200": {
+            "description": "success",
+            "schema": {
+              "$ref": "#/definitions/User_Response"
+            }
+          },
+          "400": {
+            "description": "Bad Request",
+            "schema": {
+              "$ref": "#/definitions/Response_400"
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "schema": {
+              "$ref": "#/definitions/Response_401"
+            }
+          },
+          "404": {
+            "description": "not found",
+            "schema": {
+              "$ref": "#/definitions/Response_404"
+            }
+          },
+          "500": {
+            "description": "Internal Server Error",
+            "schema": {
+              "$ref": "#/definitions/Response_500"
+            }
+          }
+        }
+      }
+    },
+
+    "/user": {
+      "put": {
+        "tags": ["User"],
+        "summary": "Update a User by ID",
+        "description": "Updates a user with the given ID.",
+        "security": [{ "Bearer": [] }],
+        "produces": ["application/json"],
+        "parameters": [
+          {
+            "in": "formData",
+            "name": "avatar",
+            "description": "Avatar file",
+            "type": "file"
+          },
+          {
+            "in": "body",
+            "name": "body",
+            "description": "User object that contains the login credentials",
+            "required": false,
+            "schema": {
+              "required": ["name"],
+              "properties": {
+                "sex": { "type": "string" },
+                "email": { "type": "string" },
+                "address": { "type": "string" },
+                "name": { "type": "string" },
+                "birthday": { "type": "string", "format": "date" },
+                "phone": { "type": "string" }
+              }
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "schema": {
+              "$ref": "#/definitions/Product_Response"
+            }
+          },
+          "400": {
+            "description": "Bad Request",
+            "schema": {
+              "$ref": "#/definitions/Response_400"
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "schema": {
+              "$ref": "#/definitions/Response_401"
+            }
+          },
+          "404": {
+            "description": "Not Found",
+            "schema": {
+              "$ref": "#/definitions/Response_404"
+            }
+          },
+          "500": {
+            "description": "Internal Server Error",
+            "schema": {
+              "$ref": "#/definitions/Response_500"
+            }
+          }
+        }
+      }
+    },
+
+    "/post": {
+      "get": {
+        "tags": ["Post"],
+        "summary": "Get all Post in system",
+        "parameters": [
+          {
+            "name": "page",
+            "in": "query",
+            "required": true,
+            "description": "Number of items per page",
+            "type": "number"
+          },
+          {
+            "name": "limit",
+            "in": "query",
+            "required": true,
+            "description": "Number of items per page",
+            "type": "number"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "success",
+            "schema": {
+              "$ref": "#/definitions/Product_Response"
+            }
+          },
+          "400": {
+            "description": "Bad Request",
+            "schema": {
+              "$ref": "#/definitions/Response_400"
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "schema": {
+              "$ref": "#/definitions/Response_401"
+            }
+          },
+          "404": {
+            "description": "not found",
+            "schema": {
+              "$ref": "#/definitions/Response_404"
+            }
+          },
+          "500": {
+            "description": "Internal Server Error",
+            "schema": {
+              "$ref": "#/definitions/Response_500"
+            }
+          }
+        }
+      }
+    },
+
+    "/post/search": {
+      "get": {
+        "tags": ["Post"],
+        "summary": "Get all Post in system",
+        "parameters": [
+          {
+            "name": "page",
+            "in": "query",
+            "required": true,
+            "description": "Number of items per page",
+            "type": "number"
+          },
+          {
+            "name": "limit",
+            "in": "query",
+            "required": true,
+            "description": "Number of items per page",
+            "type": "number"
+          }
+        ],
+
+        "responses": {
+          "200": {
+            "description": "success",
+            "schema": {
+              "$ref": "#/definitions/Product_Response"
+            }
+          },
+          "400": {
+            "description": "Bad Request",
+            "schema": {
+              "$ref": "#/definitions/Response_400"
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "schema": {
+              "$ref": "#/definitions/Response_401"
+            }
+          },
+          "404": {
+            "description": "not found",
+            "schema": {
+              "$ref": "#/definitions/Response_404"
+            }
+          },
+          "500": {
+            "description": "Internal Server Error",
+            "schema": {
+              "$ref": "#/definitions/Response_500"
+            }
+          }
+        }
+      }
+    },
+
+    "/post/{itemid}": {
+      "parameters": [
+        {
+          "name": "itemid",
+          "in": "path",
+          "required": true,
+          "description": "ID of Post that we want to find",
+          "type": "string"
+        }
+      ],
+      "get": {
+        "tags": ["Post"],
+        "summary": "Get Post with given ID",
+        "responses": {
+          "200": {
+            "description": "success",
+            "schema": {
+              "$ref": "#/definitions/Product_Response"
+            }
+          },
+          "400": {
+            "description": "Bad Request",
+            "schema": {
+              "$ref": "#/definitions/Response_400"
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "schema": {
+              "$ref": "#/definitions/Response_401"
+            }
+          },
+          "404": {
+            "description": "not found",
+            "schema": {
+              "$ref": "#/definitions/Response_404"
+            }
+          },
+          "500": {
+            "description": "Internal Server Error",
+            "schema": {
+              "$ref": "#/definitions/Response_500"
+            }
+          }
+        }
+      }
+    },
+
+    "/cart": {
+      "get": {
+        "tags": ["Cart"],
+        "summary": "Get all Carts in the system",
+        "description": "Retrieves all carts in the system.",
+        "security": [{ "Bearer": [] }],
+        "produces": ["application/json"],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "schema": {
+              "$ref": "#/definitions/Product_Response"
+            }
+          },
+          "400": {
+            "description": "Bad Request",
+            "schema": {
+              "$ref": "#/definitions/Response_400"
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "schema": {
+              "$ref": "#/definitions/Response_401"
+            }
+          },
+          "404": {
+            "description": "Not Found",
+            "schema": {
+              "$ref": "#/definitions/Response_404"
+            }
+          },
+          "500": {
+            "description": "Internal Server Error",
+            "schema": {
+              "$ref": "#/definitions/Response_500"
+            }
+          }
+        }
+      },
+      "post": {
+        "tags": ["Cart"],
+        "summary": "Create a new Cart",
+        "description": "Creates a new cart.",
+        "security": [{ "Bearer": [] }],
+        "produces": ["application/json"],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "schema": {
+              "$ref": "#/definitions/Product_Response"
+            }
+          },
+          "400": {
+            "description": "Bad Request",
+            "schema": {
+              "$ref": "#/definitions/Response_400"
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "schema": {
+              "$ref": "#/definitions/Response_401"
+            }
+          },
+          "404": {
+            "description": "Not Found",
+            "schema": {
+              "$ref": "#/definitions/Response_404"
+            }
+          },
+          "500": {
+            "description": "Internal Server Error",
+            "schema": {
+              "$ref": "#/definitions/Response_500"
+            }
+          }
+        }
+      }
+    },
+
+    "/cart/{cartid}": {
+      "parameters": [
+        {
+          "name": "cartid",
+          "in": "path",
+          "required": true,
+          "description": "ID of the cart to retrieve",
+          "type": "string"
+        }
+      ],
+      "delete": {
+        "tags": ["Cart"],
+        "summary": "Delete a Cart by ID",
+        "description": "Deletes a cart with the given ID.",
+        "security": [{ "Bearer": [] }],
+        "produces": ["application/json"],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "schema": {
+              "$ref": "#/definitions/Product_Response"
+            }
+          },
+          "400": {
+            "description": "Bad Request",
+            "schema": {
+              "$ref": "#/definitions/Response_400"
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "schema": {
+              "$ref": "#/definitions/Response_401"
+            }
+          },
+          "404": {
+            "description": "Not Found",
+            "schema": {
+              "$ref": "#/definitions/Response_404"
+            }
+          },
+          "500": {
+            "description": "Internal Server Error",
+            "schema": {
+              "$ref": "#/definitions/Response_500"
+            }
+          }
+        }
+      },
+      "put": {
+        "tags": ["Cart"],
+        "summary": "Update a Cart by ID",
+        "description": "Updates a cart with the given ID.",
+        "security": [{ "Bearer": [] }],
+        "produces": ["application/json"],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "schema": {
+              "$ref": "#/definitions/Product_Response"
+            }
+          },
+          "400": {
+            "description": "Bad Request",
+            "schema": {
+              "$ref": "#/definitions/Response_400"
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "schema": {
+              "$ref": "#/definitions/Response_401"
+            }
+          },
+          "404": {
+            "description": "Not Found",
+            "schema": {
+              "$ref": "#/definitions/Response_404"
+            }
+          },
+          "500": {
+            "description": "Internal Server Error",
+            "schema": {
+              "$ref": "#/definitions/Response_500"
+            }
+          }
+        }
+      }
+    },
+    "/comment": {
+      "get": {
+        "tags": ["Comment"],
+        "summary": "Get all Comment in system",
+        "parameters": [
+          {
+            "name": "itemid",
+            "in": "query",
+            "required": true,
+            "description": "ID of the item",
+            "type": "string"
+          },
+          {
+            "name": "shopid",
+            "in": "query",
+            "required": true,
+            "description": "ID of the shop",
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "success",
+            "schema": {
+              "$ref": "#/definitions/Product_Response"
+            }
+          },
+          "400": {
+            "description": "Bad Request",
+            "schema": {
+              "$ref": "#/definitions/Response_400"
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "schema": {
+              "$ref": "#/definitions/Response_401"
+            }
+          },
+          "404": {
+            "description": "not found",
+            "schema": {
+              "$ref": "#/definitions/Response_404"
+            }
+          },
+          "500": {
+            "description": "Internal Server Error",
+            "schema": {
+              "$ref": "#/definitions/Response_500"
+            }
+          }
+        }
+      },
+      "post": {
+        "tags": ["Comment"],
+        "description": "Create new Comment in system",
+        "parameters": [
+          {
+            "name": "user",
+            "in": "body",
+            "description": "User that we want to create"
+          }
+        ],
+        "produces": ["application/json"],
+        "responses": {
+          "200": {
+            "description": "success",
+            "schema": {
+              "$ref": "#/definitions/Product_Response"
+            }
+          },
+          "400": {
+            "description": "Bad Request",
+            "schema": {
+              "$ref": "#/definitions/Response_400"
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "schema": {
+              "$ref": "#/definitions/Response_401"
+            }
+          },
+          "404": {
+            "description": "not found",
+            "schema": {
+              "$ref": "#/definitions/Response_404"
+            }
+          },
+          "500": {
+            "description": "Internal Server Error",
+            "schema": {
+              "$ref": "#/definitions/Response_500"
+            }
+          }
+        }
+      }
+    },
+
+    "/like": {
+      "post": {
+        "tags": ["Like"],
+        "description": "Create new user in system",
+        "parameters": [
+          {
+            "in": "body",
+            "name": "body",
+            "description": "User object that contains the login credentials",
+            "required": false,
+            "schema": {
+              "required": ["name", "photoUrls"],
+              "properties": {
+                "itemid": { "type": "number" },
+                "shopid": { "type": "number" }
+              }
+            }
+          }
+        ],
+        "security": [{ "Bearer": [] }],
+        "produces": ["application/json"],
+        "responses": {
+          "200": {
+            "description": "success",
+            "schema": {
+              "$ref": "#/definitions/Product_Response"
+            }
+          },
+          "400": {
+            "description": "Bad Request",
+            "schema": {
+              "$ref": "#/definitions/Response_400"
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "schema": {
+              "$ref": "#/definitions/Response_401"
+            }
+          },
+          "404": {
+            "description": "not found",
+            "schema": {
+              "$ref": "#/definitions/Response_404"
+            }
+          },
+          "500": {
+            "description": "Internal Server Error",
+            "schema": {
+              "$ref": "#/definitions/Response_500"
+            }
+          }
+        }
+      },
+      "get": {
+        "tags": ["Like"],
+        "summary": "Get all Like in system",
+        "security": [{ "Bearer": [] }],
+        "produces": ["application/json"],
+        "responses": {
+          "200": {
+            "description": "success",
+            "schema": {
+              "$ref": "#/definitions/Product_Response"
+            }
+          },
+          "400": {
+            "description": "Bad Request",
+            "schema": {
+              "$ref": "#/definitions/Response_400"
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "schema": {
+              "$ref": "#/definitions/Response_401"
+            }
+          },
+          "404": {
+            "description": "not found",
+            "schema": {
+              "$ref": "#/definitions/Response_404"
+            }
+          },
+          "500": {
+            "description": "Internal Server Error",
+            "schema": {
+              "$ref": "#/definitions/Response_500"
+            }
+          }
+        }
+      }
+    },
+
+    "/like/{itemid}": {
+      "parameters": [
+        {
+          "name": "itemid",
+          "in": "path",
+          "required": true,
+          "description": "ID of Like that we want to find",
+          "type": "string"
+        }
+      ],
+      "delete": {
+        "tags": ["Like"],
+        "summary": "Get Like with given ID",
+        "security": [{ "Bearer": [] }],
+        "produces": ["application/json"],
+        "responses": {
+          "200": {
+            "description": "success",
+            "schema": {
+              "$ref": "#/definitions/Product_Response"
+            }
+          },
+          "400": {
+            "description": "Bad Request",
+            "schema": {
+              "$ref": "#/definitions/Response_400"
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "schema": {
+              "$ref": "#/definitions/Response_401"
+            }
+          },
+          "404": {
+            "description": "not found",
+            "schema": {
+              "$ref": "#/definitions/Response_404"
+            }
+          },
+          "500": {
+            "description": "Internal Server Error",
+            "schema": {
+              "$ref": "#/definitions/Response_500"
+            }
+          }
+        }
+      }
+    },
+
+    "/search": {
+      "get": {
+        "tags": ["Search"],
+        "summary": "Get all Search in system",
+        "security": [{ "Bearer": [] }],
+        "produces": ["application/json"],
+        "responses": {
+          "200": {
+            "description": "success"
+          },
+          "400": {
+            "description": "Bad Request",
+            "schema": {
+              "$ref": "#/definitions/Response_400"
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "schema": {
+              "$ref": "#/definitions/Response_401"
+            }
+          },
+          "404": {
+            "description": "not found",
+            "schema": {
+              "$ref": "#/definitions/Response_404"
+            }
+          },
+          "500": {
+            "description": "Internal Server Error",
+            "schema": {
+              "$ref": "#/definitions/Response_500"
+            }
+          }
+        }
+      },
+      "post": {
+        "tags": ["Search"],
+        "summary": "Get all Search in system",
+        "security": [{ "Bearer": [] }],
+        "produces": ["application/json"],
+        "parameters": [
+          {
+            "in": "body",
+            "name": "body",
+            "description": "User object that contains the login credentials",
+            "required": false,
+            "schema": {
+              "properties": {
+                "text": { "type": "string" }
+              }
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "success"
+          },
+          "400": {
+            "description": "Bad Request",
+            "schema": {
+              "$ref": "#/definitions/Response_400"
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "schema": {
+              "$ref": "#/definitions/Response_401"
+            }
+          },
+          "404": {
+            "description": "not found",
+            "schema": {
+              "$ref": "#/definitions/Response_404"
+            }
+          },
+          "500": {
+            "description": "Internal Server Error",
+            "schema": {
+              "$ref": "#/definitions/Response_500"
+            }
+          }
+        }
+      }
+    },
+
+    "/banner": {
+      "get": {
+        "tags": ["Banner"],
+        "summary": "Get all banner in system",
+        "responses": {
+          "200": {
+            "description": "success",
+            "schema": {
+              "$ref": "#/definitions/Banner_Response"
+            }
+          },
+          "400": {
+            "description": "Bad Request",
+            "schema": {
+              "$ref": "#/definitions/Response_400"
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "schema": {
+              "$ref": "#/definitions/Response_401"
+            }
+          },
+          "404": {
+            "description": "not found",
+            "schema": {
+              "$ref": "#/definitions/Response_404"
+            }
+          },
+          "500": {
+            "description": "Internal Server Error",
+            "schema": {
+              "$ref": "#/definitions/Response_500"
+            }
+          }
+        }
+      }
+    },
+
+    "/batchList": {
+      "get": {
+        "tags": ["BatchList"],
+        "summary": "Get all batchList in system",
+        "responses": {
+          "200": {
+            "description": "success",
+            "schema": {
+              "$ref": "#/definitions/BatchList_Response"
+            }
+          },
+          "400": {
+            "description": "Bad Request",
+            "schema": {
+              "$ref": "#/definitions/Response_400"
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "schema": {
+              "$ref": "#/definitions/Response_401"
+            }
+          },
+          "404": {
+            "description": "not found",
+            "schema": {
+              "$ref": "#/definitions/Response_404"
+            }
+          },
+          "500": {
+            "description": "Internal Server Error",
+            "schema": {
+              "$ref": "#/definitions/Response_500"
+            }
+          }
+        }
+      }
+    },
+
+    "/categoryTree/{level}": {
+      "parameters": [
+        {
+          "name": "level",
+          "in": "path",
+          "required": true,
+          "description": "ID of Like that we want to find",
+          "type": "string"
+        }
+      ],
+      "get": {
+        "tags": ["CategoryTree"],
+        "summary": "Get CategoryTree with given ID",
+        "responses": {
+          "200": {
+            "description": "success",
+            "schema": {
+              "$ref": "#/definitions/HomeCategory_Response"
+            }
+          },
+          "400": {
+            "description": "Bad Request",
+            "schema": {
+              "$ref": "#/definitions/Response_400"
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "schema": {
+              "$ref": "#/definitions/Response_401"
+            }
+          },
+          "404": {
+            "description": "not found",
+            "schema": {
+              "$ref": "#/definitions/Response_404"
+            }
+          },
+          "500": {
+            "description": "Internal Server Error",
+            "schema": {
+              "$ref": "#/definitions/Response_500"
+            }
+          }
+        }
+      }
+    },
+
+    "/categoryTree/parent/{catid}": {
+      "parameters": [
+        {
+          "name": "catid",
+          "in": "path",
+          "required": true,
+          "description": "ID of Like that we want to find",
+          "type": "string"
+        }
+      ],
+      "get": {
+        "tags": ["CategoryTree"],
+        "summary": "Get Like with given ID",
+        "responses": {
+          "200": {
+            "description": "success",
+            "schema": {
+              "$ref": "#/definitions/HomeCategory_Response"
+            }
+          },
+          "400": {
+            "description": "Bad Request",
+            "schema": {
+              "$ref": "#/definitions/Response_400"
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "schema": {
+              "$ref": "#/definitions/Response_401"
+            }
+          },
+          "404": {
+            "description": "not found",
+            "schema": {
+              "$ref": "#/definitions/Response_404"
+            }
+          },
+          "500": {
+            "description": "Internal Server Error",
+            "schema": {
+              "$ref": "#/definitions/Response_500"
+            }
+          }
+        }
+      }
+    },
+
+    "/FlashSale": {
+      "get": {
+        "tags": ["FlashSale"],
+        "summary": "Get all flashSale in system",
+        "responses": {
+          "200": {
+            "description": "success",
+            "schema": {
+              "$ref": "#/definitions/FlashSale_Response"
+            }
+          },
+          "400": {
+            "description": "Bad Request",
+            "schema": {
+              "$ref": "#/definitions/Response_400"
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "schema": {
+              "$ref": "#/definitions/Response_401"
+            }
+          },
+          "404": {
+            "description": "not found",
+            "schema": {
+              "$ref": "#/definitions/Response_404"
+            }
+          },
+          "500": {
+            "description": "Internal Server Error",
+            "schema": {
+              "$ref": "#/definitions/Response_500"
+            }
+          }
+        }
+      }
+    },
+
+    "/industry": {
+      "get": {
+        "tags": ["Industry"],
+        "summary": "Get all industry in system",
+        "responses": {
+          "200": {
+            "description": "success",
+            "schema": {
+              "$ref": "#/definitions/Industry_Response"
+            }
+          },
+          "400": {
+            "description": "Bad Request",
+            "schema": {
+              "$ref": "#/definitions/Response_400"
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "schema": {
+              "$ref": "#/definitions/Response_401"
+            }
+          },
+          "404": {
+            "description": "not found",
+            "schema": {
+              "$ref": "#/definitions/Response_404"
+            }
+          },
+          "500": {
+            "description": "Internal Server Error",
+            "schema": {
+              "$ref": "#/definitions/Response_500"
+            }
+          }
+        }
+      }
+    },
+
+    "/industry/Category": {
+      "get": {
+        "tags": ["Industry"],
+        "parameters": [
+          {
+            "name": "limit",
+            "in": "query",
+            "required": true,
+            "description": "",
+            "type": "number"
+          },
+          {
+            "name": "page",
+            "in": "query",
+            "required": true,
+            "description": "",
+            "type": "number"
+          },
+          {
+            "name": "category_name",
+            "in": "query",
+            "required": true,
+            "description": "",
+            "type": "string"
+          }
+        ],
+        "summary": "Get all industry in system",
+        "responses": {
+          "200": {
+            "description": "success",
+            "schema": {
+              "$ref": "#/definitions/Industry_Response"
+            }
+          },
+          "400": {
+            "description": "Bad Request",
+            "schema": {
+              "$ref": "#/definitions/Response_400"
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "schema": {
+              "$ref": "#/definitions/Response_401"
+            }
+          },
+          "404": {
+            "description": "not found",
+            "schema": {
+              "$ref": "#/definitions/Response_404"
+            }
+          },
+          "500": {
+            "description": "Internal Server Error",
+            "schema": {
+              "$ref": "#/definitions/Response_500"
+            }
+          }
+        }
+      }
+    },
+
+    "/notification": {
+      "get": {
+        "tags": ["Notification"],
+        "summary": "Get all notification in system",
+        "responses": {
+          "200": {
+            "description": "success",
+            "schema": {
+              "$ref": "#/definitions/Notification_Response"
+            }
+          },
+          "400": {
+            "description": "Bad Request",
+            "schema": {
+              "$ref": "#/definitions/Response_400"
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "schema": {
+              "$ref": "#/definitions/Response_401"
+            }
+          },
+          "404": {
+            "description": "not found",
+            "schema": {
+              "$ref": "#/definitions/Response_404"
+            }
+          },
+          "500": {
+            "description": "Internal Server Error",
+            "schema": {
+              "$ref": "#/definitions/Response_500"
+            }
+          }
+        }
+      }
+    },
+
+    "/order": {
+      "get": {
+        "tags": ["Order"],
+        "summary": "Get all Order in system",
+        "security": [{ "Bearer": [] }],
+        "produces": ["application/json"],
+        "responses": {
+          "200": {
+            "description": "success",
+            "schema": {
+              "$ref": "#/definitions/Product_Response"
+            }
+          },
+          "400": {
+            "description": "Bad Request",
+            "schema": {
+              "$ref": "#/definitions/Response_400"
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "schema": {
+              "$ref": "#/definitions/Response_401"
+            }
+          },
+          "404": {
+            "description": "not found",
+            "schema": {
+              "$ref": "#/definitions/Response_404"
+            }
+          },
+          "500": {
+            "description": "Internal Server Error",
+            "schema": {
+              "$ref": "#/definitions/Response_500"
+            }
+          }
+        }
+      },
+      "post": {
+        "tags": ["Order"],
+        "summary": "Get all Order in system",
+        "security": [{ "Bearer": [] }],
+        "produces": ["application/json"],
+        "responses": {
+          "200": {
+            "description": "success",
+            "schema": {
+              "$ref": "#/definitions/Product_Response"
+            }
+          },
+          "400": {
+            "description": "Bad Request",
+            "schema": {
+              "$ref": "#/definitions/Response_400"
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "schema": {
+              "$ref": "#/definitions/Response_401"
+            }
+          },
+          "404": {
+            "description": "not found",
+            "schema": {
+              "$ref": "#/definitions/Response_404"
+            }
+          },
+          "500": {
+            "description": "Internal Server Error",
+            "schema": {
+              "$ref": "#/definitions/Response_500"
+            }
+          }
+        }
+      }
+    },
+
+    "/order/{orderid}": {
+      "parameters": [
+        {
+          "name": "orderid",
+          "in": "path",
+          "required": true,
+          "description": "ID of orderid that we want to find",
+          "type": "string"
+        }
+      ],
+      "put": {
+        "tags": ["Order"],
+        "summary": "put Shop with given ID",
+        "security": [{ "Bearer": [] }],
+        "produces": ["application/json"],
+        "responses": {
+          "200": {
+            "description": "success",
+            "schema": {
+              "$ref": "#/definitions/Product_Response"
+            }
+          },
+          "400": {
+            "description": "Bad Request",
+            "schema": {
+              "$ref": "#/definitions/Response_400"
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "schema": {
+              "$ref": "#/definitions/Response_401"
+            }
+          },
+          "404": {
+            "description": "not found",
+            "schema": {
+              "$ref": "#/definitions/Response_404"
+            }
+          },
+          "500": {
+            "description": "Internal Server Error",
+            "schema": {
+              "$ref": "#/definitions/Response_500"
+            }
+          }
+        }
+      },
+      "delete": {
+        "tags": ["Order"],
+        "summary": "delete Shop with given ID",
+        "security": [{ "Bearer": [] }],
+        "produces": ["application/json"],
+        "responses": {
+          "200": {
+            "description": "success",
+            "schema": {
+              "$ref": "#/definitions/Product_Response"
+            }
+          },
+          "400": {
+            "description": "Bad Request",
+            "schema": {
+              "$ref": "#/definitions/Response_400"
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "schema": {
+              "$ref": "#/definitions/Response_401"
+            }
+          },
+          "404": {
+            "description": "not found",
+            "schema": {
+              "$ref": "#/definitions/Response_404"
+            }
+          },
+          "500": {
+            "description": "Internal Server Error",
+            "schema": {
+              "$ref": "#/definitions/Response_500"
+            }
+          }
+        }
+      }
+    },
+
+    "/searchSuggestion": {
+      "get": {
+        "tags": ["SearchSuggestion"],
+        "summary": "Get all searchSuggestion in system",
+        "responses": {
+          "200": {
+            "description": "success",
+            "schema": {
+              "$ref": "#/definitions/SearchSuggestion_Response"
+            }
+          },
+          "400": {
+            "description": "Bad Request",
+            "schema": {
+              "$ref": "#/definitions/Response_400"
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "schema": {
+              "$ref": "#/definitions/Response_401"
+            }
+          },
+          "404": {
+            "description": "not found",
+            "schema": {
+              "$ref": "#/definitions/Response_404"
+            }
+          },
+          "500": {
+            "description": "Internal Server Error",
+            "schema": {
+              "$ref": "#/definitions/Response_500"
+            }
+          }
+        }
+      }
+    },
+
+    "/shop/{shopid}": {
+      "parameters": [
+        {
+          "name": "shopid",
+          "in": "path",
+          "required": true,
+          "description": "ID of shopid that we want to find",
+          "type": "string"
+        }
+      ],
+      "get": {
+        "tags": ["Shop"],
+        "summary": "Get Shop with given ID",
+        "responses": {
+          "200": {
+            "description": "success",
+            "schema": {
+              "$ref": "#/definitions/Shop_Response"
+            }
+          },
+          "400": {
+            "description": "Bad Request",
+            "schema": {
+              "$ref": "#/definitions/Response_400"
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "schema": {
+              "$ref": "#/definitions/Response_401"
+            }
+          },
+          "404": {
+            "description": "not found",
+            "schema": {
+              "$ref": "#/definitions/Response_404"
+            }
+          },
+          "500": {
+            "description": "Internal Server Error",
+            "schema": {
+              "$ref": "#/definitions/Response_500"
+            }
+          }
+        }
+      }
+    },
+
+    "/shopMall": {
+      "get": {
+        "tags": ["ShopMall"],
+        "summary": "Get all shopMall in system",
+        "responses": {
+          "200": {
+            "description": "success",
+            "schema": {
+              "$ref": "#/definitions/ShopMall_Response"
+            }
+          },
+          "400": {
+            "description": "Bad Request",
+            "schema": {
+              "$ref": "#/definitions/Response_400"
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "schema": {
+              "$ref": "#/definitions/Response_401"
+            }
+          },
+          "404": {
+            "description": "not found",
+            "schema": {
+              "$ref": "#/definitions/Response_404"
+            }
+          },
+          "500": {
+            "description": "Internal Server Error",
+            "schema": {
+              "$ref": "#/definitions/Response_500"
+            }
+          }
+        }
+      }
+    },
+
+    "/topProduct": {
+      "get": {
+        "tags": ["TopProduct"],
+        "summary": "Get all TopProduct in system",
+        "parameters": [
+          {
+            "name": "limit",
+            "in": "query",
+            "required": true,
+            "description": "",
+            "type": "number"
+          },
+          {
+            "name": "page",
+            "in": "query",
+            "required": true,
+            "description": "",
+            "type": "number"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "success",
+            "schema": {
+              "$ref": "#/definitions/TopProduct_Response"
+            }
+          },
+          "400": {
+            "description": "Bad Request",
+            "schema": {
+              "$ref": "#/definitions/Response_400"
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "schema": {
+              "$ref": "#/definitions/Response_401"
+            }
+          },
+          "404": {
+            "description": "not found",
+            "schema": {
+              "$ref": "#/definitions/Response_404"
+            }
+          },
+          "500": {
+            "description": "Internal Server Error",
+            "schema": {
+              "$ref": "#/definitions/Response_500"
+            }
+          }
+        }
+      }
+    }
+  },
+  "definitions": {
+    "Banner_Response": {
+      "type": "object",
+      "properties": {
+        "err": {
+          "type": "integer",
+          "default": 0
+        },
+        "mes": {
+          "type": "string"
+        },
+        "total": {
+          "type": "integer"
+        },
+        "response": {
+          "type": "array",
+          "items": { "$ref": "#/definitions/Banner" }
+        }
+      }
+    },
+
+    "BatchList_Response": {
+      "type": "object",
+      "properties": {
+        "err": {
+          "type": "integer",
+          "default": 0
+        },
+        "mes": {
+          "type": "string"
+        },
+        "total": {
+          "type": "integer"
+        },
+        "response": {
+          "type": "array",
+          "items": { "$ref": "#/definitions/BatchList" }
+        }
+      }
+    },
+
+    "Industry_Response": {
+      "type": "object",
+      "properties": {
+        "err": {
+          "type": "integer",
+          "default": 0
+        },
+        "mes": {
+          "type": "string"
+        },
+        "total": {
+          "type": "integer"
+        },
+        "response": {
+          "type": "object",
+          "$ref": "#/definitions/Industry"
+        }
+      }
+    },
+
+    "Cart_Response": {
+      "type": "object",
+      "properties": {
+        "err": {
+          "type": "integer",
+          "default": 0
+        },
+        "mes": {
+          "type": "string"
+        },
+        "total_cart": {
+          "type": "integer"
+        },
+        "response": {
+          "type": "object",
+          "$ref": "#/definitions/Cart"
+        }
+      }
+    },
+
+    "Category_Response": {
+      "type": "object",
+      "properties": {
+        "err": {
+          "type": "integer",
+          "default": 0
+        },
+        "mes": {
+          "type": "string"
+        },
+        "total_cart": {
+          "type": "integer"
+        },
+        "response": {
+          "type": "object",
+          "$ref": "#/definitions/Category"
+        }
+      }
+    },
+
+    "HomeCategory_Response": {
+      "type": "object",
+      "properties": {
+        "err": {
+          "type": "integer",
+          "default": 0
+        },
+        "mes": {
+          "type": "string"
+        },
+        "total": {
+          "type": "integer"
+        },
+        "response": {
+          "type": "array",
+          "items": { "$ref": "#/definitions/HomeCategory" }
+        }
+      }
+    },
+
+    "Comment_Response": {
+      "type": "object",
+      "properties": {
+        "err": {
+          "type": "integer",
+          "default": 0
+        },
+        "mes": {
+          "type": "string"
+        },
+        "response": {
+          "type": "object",
+          "$ref": "#/definitions/Comment"
+        }
+      }
+    },
+
+    "FlashSale_Response": {
+      "type": "object",
+      "properties": {
+        "err": {
+          "type": "integer",
+          "default": 0
+        },
+        "mes": {
+          "type": "string"
+        },
+        "total": {
+          "type": "integer"
+        },
+        "response": {
+          "type": "array",
+          "items": { "$ref": "#/definitions/FlashSale" }
+        }
+      }
+    },
+
+    "Like_Response": {
+      "type": "object",
+      "properties": {
+        "err": {
+          "type": "integer",
+          "default": 0
+        },
+        "mes": {
+          "type": "string"
+        },
+        "response": {
+          "type": "object",
+          "$ref": "#/definitions/Like"
+        }
+      }
+    },
+
+    "Notification_Response": {
+      "type": "object",
+      "properties": {
+        "err": {
+          "type": "integer",
+          "default": 0
+        },
+        "mes": {
+          "type": "string"
+        },
+        "response": {
+          "type": "array",
+          "items": { "$ref": "#/definitions/Notification" }
+        }
+      }
+    },
+
+    "Order_Response": {
+      "type": "object",
+      "properties": {
+        "err": {
+          "type": "integer",
+          "default": 0
+        },
+        "mes": {
+          "type": "string"
+        },
+        "response": {
+          "type": "object",
+          "$ref": "#/definitions/Order"
+        }
+      }
+    },
+
+    "Post_Response": {
+      "type": "object",
+      "properties": {
+        "err": {
+          "type": "integer",
+          "default": 0
+        },
+        "mes": {
+          "type": "string"
+        },
+        "response": {
+          "type": "object",
+          "$ref": "#/definitions/Post"
+        }
+      }
+    },
+
+    "SearchSuggestion_Response": {
+      "type": "object",
+      "properties": {
+        "err": {
+          "type": "integer",
+          "default": 0
+        },
+        "mes": {
+          "type": "string"
+        },
+        "response": {
+          "type": "array",
+          "items": { "$ref": "#/definitions/SearchSuggestion" }
+        }
+      }
+    },
+
+    "Shop_Response": {
+      "type": "object",
+      "properties": {
+        "err": {
+          "type": "integer",
+          "default": 0
+        },
+        "mes": {
+          "type": "string"
+        },
+        "response": {
+          "type": "array",
+          "items": { "$ref": "#/definitions/Shop" }
+        }
+      }
+    },
+
+    "ShopMall_Response": {
+      "type": "object",
+      "properties": {
+        "err": {
+          "type": "integer",
+          "default": 0
+        },
+        "mes": {
+          "type": "string"
+        },
+        "total": {
+          "type": "integer"
+        },
+        "response": {
+          "type": "array",
+          "items": { "$ref": "#/definitions/ShopMall" }
+        }
+      }
+    },
+
+    "TierVariation_Response": {
+      "type": "object",
+      "properties": {
+        "err": {
+          "type": "integer",
+          "default": 0
+        },
+        "mes": {
+          "type": "string"
+        },
+        "response": {
+          "type": "object",
+          "$ref": "#/definitions/TierVariation"
+        }
+      }
+    },
+
+    "TopProduct_Response": {
+      "type": "object",
+      "properties": {
+        "err": {
+          "type": "integer",
+          "default": 0
+        },
+        "mes": {
+          "type": "string"
+        },
+        "response": {
+          "type": "array",
+          "items": { "$ref": "#/definitions/TopProduct" }
+        }
+      }
+    },
+
+    "User_Response": {
+      "type": "object",
+      "properties": {
+        "err": {
+          "type": "integer",
+          "default": 0
+        },
+        "mes": {
+          "type": "string"
+        },
+        "response": {
+          "type": "array",
+          "items": { "$ref": "#/definitions/User" }
+        }
+      }
+    },
+
+    "Attribute": {
+      "properties": {
+        "id": { "type": "number" },
+        "itemid": { "type": "number" },
+        "name": { "type": "string" },
+        "value": { "type": "string" },
+        "createdAt": { "type": "string", "format": "date-time" },
+        "updatedAt": { "type": "string", "format": "date-time" }
+      }
+    },
+
+    "Banner": {
+      "properties": {
+        "id": { "type": "number" },
+        "image_url": { "type": "string" },
+        "createdAt": { "type": "string", "format": "date-time" },
+        "updatedAt": { "type": "string", "format": "date-time" }
+      }
+    },
+
+    "BatchList": {
+      "properties": {
+        "id": { "type": "number" },
+        "banner_image": { "type": "string" },
+        "title": { "type": "string" },
+        "end": { "type": "string", "format": "date-time" },
+        "start": { "type": "string", "format": "date-time" },
+        "createdAt": { "type": "string", "format": "date-time" },
+        "updatedAt": { "type": "string", "format": "date-time" }
+      }
+    },
+
+    "Cart": {
+      "properties": {
+        "id": { "type": "number" },
+        "cartid": { "type": "number" },
+        "userid": { "type": "string" },
+        "itemid": { "type": "number" },
+        "shopid": { "type": "number" },
+        "amount": { "type": "number" },
+        "option": { "type": "string" },
+        "createdAt": { "type": "string", "format": "date-time" },
+        "updatedAt": { "type": "string", "format": "date-time" }
+      }
+    },
+
+    "Category": {
+      "properties": {
+        "id": { "type": "number" },
+        "itemid": { "type": "number" },
+        "display_name": { "type": "string" },
+        "catid": { "type": "string" },
+        "createdAt": { "type": "string", "format": "date-time" },
+        "updatedAt": { "type": "string", "format": "date-time" }
+      }
+    },
+
+    "Comment": {
+      "properties": {
+        "id": { "type": "number" },
+        "userid": { "type": "string" },
+        "orderid": { "type": "number" },
+        "itemid": { "type": "number" },
+        "cmtid": { "type": "number" },
+        "rating": { "type": "number" },
+        "shopid": { "type": "number" },
+        "comment": { "type": "string" },
+        "rating_star": { "type": "number" },
+        "status": { "type": "number" },
+        "author_username": { "type": "string" },
+        "author_portrait": { "type": "string" },
+        "images": { "type": "string" },
+        "cover": { "type": "string" },
+        "videos": { "type": "string" },
+        "model_name": { "type": "string" },
+        "options": { "type": "string" },
+        "like_count": { "type": "number" },
+        "liked": { "type": "boolean" },
+        "mtime": { "type": "string", "format": "date-time" },
+        "ctime": { "type": "string", "format": "date-time" },
+        "createdAt": { "type": "string", "format": "date-time" },
+        "updatedAt": { "type": "string", "format": "date-time" }
+      }
+    },
+
+    "CommentReplie": {
+      "properties": {
+        "id": { "type": "number" },
+        "orderid": { "type": "number" },
+        "itemid": { "type": "number" },
+        "cmtid": { "type": "number" },
+        "userid": { "type": "string" },
+        "shopid": { "type": "number" },
+        "comment": { "type": "string" },
+        "ctime": { "type": "string", "format": "date-time" },
+        "mtime": { "type": "string", "format": "date-time" },
+        "createdAt": { "type": "string", "format": "date-time" },
+        "updatedAt": { "type": "string", "format": "date-time" }
+      }
+    },
+
+    "DeepDiscountSkin": {
+      "properties": {
+        "id": { "type": "number" },
+        "itemid": { "type": "number" },
+        "promotion_price": { "type": "string" },
+        "hidden_promotion_price": { "type": "string" },
+        "text": { "type": "string" },
+        "start_time": { "type": "string", "format": "date-time" },
+        "end_time": { "type": "string", "format": "date-time" },
+        "createdAt": { "type": "string", "format": "date-time" },
+        "updatedAt": { "type": "string", "format": "date-time" }
+      }
+    },
+
+    "Description": {
+      "properties": {
+        "id": { "type": "number" },
+        "itemid": { "type": "number" },
+        "description": { "type": "string" },
+        "createdAt": { "type": "string", "format": "date-time" },
+        "updatedAt": { "type": "string", "format": "date-time" }
+      }
+    },
+
+    "FlashSale": {
+      "properties": {
+        "id": { "type": "number" },
+        "itemid": { "type": "number" },
+        "shopid": { "type": "number" },
+        "catid": { "type": "number" },
+        "name": { "type": "string" },
+        "image": { "type": "string" },
+        "price": { "type": "number" },
+        "price_min": { "type": "number" },
+        "price_max": { "type": "number" },
+        "stock": { "type": "number" },
+        "historical_sold": { "type": "number" },
+        "price_min_before_discount": { "type": "number" },
+        "price_max_before_discount": { "type": "number" },
+        "discount": { "type": "string" },
+        "shop_rating": { "type": "number" },
+        "filename": { "type": "string" },
+        "liked": { "type": "boolean" },
+        "is_official_shop": { "type": "boolean" },
+        "is_service_by_shopee": { "type": "boolean" },
+        "show_free_shipping": { "type": "boolean" },
+        "start_time": { "type": "string", "format": "date-time" },
+        "end_time": { "type": "string", "format": "date-time" },
+        "createdAt": { "type": "string", "format": "date-time" },
+        "updatedAt": { "type": "string", "format": "date-time" }
+      }
+    },
+
+    "HomeCategory": {
+      "properties": {
+        "id": { "type": "number" },
+        "display_name": { "type": "string" },
+        "catid": { "type": "number" },
+        "parent_catid": { "type": "number" },
+        "name": { "type": "string" },
+        "image": { "type": "string" },
+        "unselected_image": { "type": "string" },
+        "selected_image": { "type": "string" },
+        "level": { "type": "number" },
+        "createdAt": { "type": "string", "format": "date-time" },
+        "updatedAt": { "type": "string", "format": "date-time" }
+      }
+    },
+
+    "Industry": {
+      "properties": {
+        "id": { "type": "number" },
+        "category_name": { "type": "string" },
+        "display_name": { "type": "string" },
+        "images": { "type": "string" },
+        "path_category_name": { "type": "string" },
+        "path_category_id": { "type": "string" },
+        "catid": { "type": "number" },
+        "createdAt": { "type": "string", "format": "date-time" },
+        "updatedAt": { "type": "string", "format": "date-time" }
+      }
+    },
+
+    "Like": {
+      "properties": {
+        "id": { "type": "number" },
+        "userid": { "type": "string" },
+        "itemid": { "type": "number" },
+        "shopid": { "type": "number" },
+        "createdAt": { "type": "string", "format": "date-time" },
+        "updatedAt": { "type": "string", "format": "date-time" }
+      }
+    },
+
+    "Notification": {
+      "properties": {
+        "id": { "type": "number" },
+        "image": { "type": "string" },
+        "title": { "type": "string" },
+        "content": { "type": "string" },
+        "userid": { "type": "string" },
+        "seen": { "type": "boolean" },
+        "time": { "type": "string" },
+        "createdAt": { "type": "string", "format": "date-time" },
+        "updatedAt": { "type": "string", "format": "date-time" }
+      }
+    },
+
+    "Order": {
+      "properties": {
+        "id": { "type": "number" },
+        "orderid": { "type": "string" },
+        "userid": { "type": "string" },
+        "itemid": { "type": "number" },
+        "shopid": { "type": "number" },
+        "amount": { "type": "number" },
+        "option": { "type": "string" },
+        "state": { "type": "string" },
+        "note": { "type": "string" },
+        "shiped": { "type": "boolean" },
+        "createdAt": { "type": "string", "format": "date-time" },
+        "updatedAt": { "type": "string", "format": "date-time" }
+      }
+    },
+
+    "Post": {
+      "properties": {
+        "id": { "type": "number" },
+        "itemid": { "type": "number" },
+        "shopid": { "type": "number" },
+        "currency": { "type": "string" },
+        "stock": { "type": "number" },
+        "status": { "type": "number" },
+        "sold": { "type": "number" },
+        "liked_count": { "type": "number" },
+        "catid": { "type": "number" },
+        "cmt_count": { "type": "number" },
+        "discount": { "type": "string" },
+        "raw_discount": { "type": "number" },
+        "size_chart": { "type": "string" },
+        "shop_name": { "type": "string" },
+        "transparent_background_image": { "type": "string" },
+        "images": { "type": "string" },
+        "view_count": { "type": "number" },
+        "name": { "type": "string" },
+        "image": { "type": "string" },
+        "price": { "type": "number" },
+        "price_min": { "type": "number" },
+        "price_max": { "type": "number" },
+        "historical_sold": { "type": "number" },
+        "price_min_before_discount": { "type": "number" },
+        "price_max_before_discount": { "type": "number" },
+        "shop_rating": { "type": "number" },
+        "filename": { "type": "string" },
+        "liked": { "type": "boolean" },
+        "ctime": { "type": "string", "format": "date-time" },
+        "is_official_shop": { "type": "boolean" },
+        "is_service_by_shopee": { "type": "boolean" },
+        "show_free_shipping": { "type": "boolean" },
+        "is_deep_discount_skin": { "type": "boolean" },
+        "is_video": { "type": "boolean" },
+        "is_voucher": { "type": "boolean" },
+        "is_attributes": { "type": "boolean" },
+        "createdAt": { "type": "string", "format": "date-time" },
+        "updatedAt": { "type": "string", "format": "date-time" }
+      }
+    },
+
+    "Search": {
+      "properties": {
+        "id": { "type": "number" },
+        "userid": { "type": "string" },
+        "text": { "type": "string" },
+        "createdAt": { "type": "string", "format": "date-time" },
+        "updatedAt": { "type": "string", "format": "date-time" }
+      }
+    },
+
+    "SearchSuggestion": {
+      "properties": {
+        "id": { "type": "number" },
+        "text": { "type": "string" },
+        "count": { "type": "number" },
+        "createdAt": { "type": "string", "format": "date-time" },
+        "updatedAt": { "type": "string", "format": "date-time" }
+      }
+    },
+
+    "Shop": {
+      "properties": {
+        "id": { "type": "number" },
+        "shopid": { "type": "number" },
+        "userid": { "type": "string" },
+        "is_official_shop": { "type": "boolean" },
+        "item_count": { "type": "number" },
+        "rating_star": { "type": "number" },
+        "name": { "type": "string" },
+        "cover": { "type": "string" },
+        "follower_count": { "type": "number" },
+        "rating_bad": { "type": "number" },
+        "rating_good": { "type": "number" },
+        "rating_normal": { "type": "number" },
+        "status": { "type": "number" },
+        "shop_location": { "type": "string" },
+        "username": { "type": "string" },
+        "portrait": { "type": "string" },
+        "ctime": { "type": "string", "format": "date-time" },
+        "mtime": { "type": "string", "format": "date-time" },
+        "response_rate": { "type": "number" },
+        "country": { "type": "string" },
+        "response_time": { "type": "number" },
+        "description": { "type": "string" },
+        "followed": { "type": "boolean" },
+        "last_active_time": { "type": "number" },
+        "createdAt": { "type": "string", "format": "date-time" },
+        "updatedAt": { "type": "string", "format": "date-time" }
+      }
+    },
+
+    "ShopMall": {
+      "properties": {
+        "id": { "type": "number" },
+        "url": { "type": "string" },
+        "image": { "type": "string" },
+        "shopid": { "type": "number" },
+        "promo_text": { "type": "string" },
+        "createdAt": { "type": "string", "format": "date-time" },
+        "updatedAt": { "type": "string", "format": "date-time" }
+      }
+    },
+
+    "TierVariation": {
+      "properties": {
+        "id": { "type": "number" },
+        "itemid": { "type": "number" },
+        "name": { "type": "string" },
+        "option": { "type": "string" },
+        "images": { "type": "string" },
+        "createdAt": { "type": "string", "format": "date-time" },
+        "updatedAt": { "type": "string", "format": "date-time" }
+      }
+    },
+
+    "TopProduct": {
+      "properties": {
+        "id": { "type": "number" },
+        "data_type": { "type": "string" },
+        "count": { "type": "number" },
+        "name": { "type": "string" },
+        "images": { "type": "string" },
+        "sort_type": { "type": "number" },
+        "best_price": { "type": "number" },
+        "display_text": { "type": "string" },
+        "createdAt": { "type": "string", "format": "date-time" },
+        "updatedAt": { "type": "string", "format": "date-time" }
+      }
+    },
+
+    "User": {
+      "properties": {
+        "sex": { "type": "string" },
+        "userid": { "type": "string" },
+        "shopid": { "type": "number" },
+        "password": { "type": "string" },
+        "email": { "type": "string" },
+        "name": { "type": "string" },
+        "address": { "type": "string" },
+        "birthday": { "type": "string", "format": "date-time" },
+        "phone": { "type": "number" },
+        "avatar": { "type": "string" },
+        "role": { "type": "string" },
+        "createdAt": { "type": "string", "format": "date-time" },
+        "updatedAt": { "type": "string", "format": "date-time" }
+      }
+    },
+
+    "Video": {
+      "properties": {
+        "id": { "type": "number" },
+        "itemid": { "type": "number" },
+        "video_id": { "type": "string" },
+        "thumb_url": { "type": "string" },
+        "duration": { "type": "number" },
+        "version": { "type": "number" },
+        "width": { "type": "number" },
+        "height": { "type": "number" },
+        "defn": { "type": "string" },
+        "profile": { "type": "string" },
+        "url": { "type": "string" },
+        "createdAt": { "type": "string", "format": "date-time" },
+        "updatedAt": { "type": "string", "format": "date-time" }
+      }
+    },
+
+    "VoucherProduct": {
+      "properties": {
+        "id": { "type": "number" },
+        "itemid": { "type": "number" },
+        "promotion_id": { "type": "number" },
+        "voucher_code": { "type": "string" },
+        "label": { "type": "string" },
+        "createdAt": { "type": "string", "format": "date-time" },
+        "updatedAt": { "type": "string", "format": "date-time" }
+      }
+    },
+
+    "Response_400": {
+      "type": "object",
+      "properties": {
+        "err": {
+          "type": "integer",
+          "default": -1
+        },
+        "mes": {
+          "type": "string"
+        }
+      }
+    },
+
+    "Response_401": {
+      "type": "object",
+      "properties": {
+        "err": {
+          "type": "integer",
+          "default": -1
+        },
+        "mes": {
+          "type": "string"
+        }
+      }
+    },
+
+    "Response_404": {
+      "type": "object",
+      "properties": {
+        "err": {
+          "type": "integer",
+          "default": -1
+        },
+        "mes": {
+          "type": "string"
+        }
+      }
+    },
+
+    "Response_500": {
+      "type": "object",
+      "properties": {
+        "err": {
+          "type": "integer",
+          "default": -1
+        },
+        "mes": {
+          "type": "string"
+        }
+      }
+    }
+  }
+}

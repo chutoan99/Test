@@ -1,0 +1,29 @@
+version: '3'
+services:
+  backend:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    restart: unless-stopped
+    environment:
+      MONGODB_CONNECT: ${MONGODB_CONNECT}
+      DB_HOST: ${DB_HOST}
+      DB_NAME: ${DB_NAME}
+      DB_USERNAME: ${DB_USERNAME}
+      DB_PASSWORD: ${DB_PASSWORD}
+      DB_PORT: ${DB_PORT}
+      DB_DIALECT: ${DB_DIALECT}
+      GOOGLE_CLIENT_ID: ${GOOGLE_CLIENT_ID}
+      GOOGLE_CLIENT_SECRET: ${GOOGLE_CLIENT_SECRET}
+      CLOUDINARY_NAME: ${CLOUDINARY_NAME}
+      CLOUDINARY_KEY: ${CLOUDINARY_KEY}
+      CLOUDINARY_SECRET: ${CLOUDINARY_SECRET}
+      USER_EMAIL: ${USER_EMAIL}
+      PASS_EMAIL: ${PASS_EMAIL}
+      SECRET_KEY: ${SECRET_KEY}
+      LIMIT: ${LIMIT}
+      SCHEMES_SWAGGER: ${SCHEMES_SWAGGER}
+      PORT: ${PORT}
+      URL_BACKEND: ${URL_BACKEND}
+# docker compose -p shopee up -d
+

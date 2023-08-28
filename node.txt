@@ -1,0 +1,27 @@
++buid docker:
+docker build -t docker-rest-api-1.0.0 .
++ khởi chạy với docker:
+docker run -p 3000:3000 docker-rest-api-1.0.0
++ kiểm tra các port dang run:
+docker ps
++ dừng port đang chạy
+docker stop nameport
++ xóa port đang chạy
+docker rm nameport
++ truy cập vào exec
+
++đẩy lên dockerhub:
+
+create models : cd src 
+npx sequelize-cli db:migrate
+
+
+DELETE t1 FROM `overviews` t1 INNER JOIN overviews t2 ON t1.id<t2.id AND t1.itemid=t2.itemid
+
+mapbox.com
+
+
+
+
+
+nói lại theo ý này hay hay giúp tôi
