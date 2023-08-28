@@ -1,4 +1,4 @@
-import mysql from 'mysql2/promise'
+import mysql from 'mysql2'
 import mongoose from 'mongoose'
 import dotenv from 'dotenv'
 dotenv.config()
