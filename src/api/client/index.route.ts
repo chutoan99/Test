@@ -12,7 +12,10 @@ import TopProductRoute from './topProduct/index.route'
 import ShopRoute from './shop/index.route'
 import SearchRoute from './search/index.route'
 import IndustryRoute from './industry/index.route'
-
+import LikeRoute from './like/index.route'
+import CategoryTreeRoute from './categoryTree/index.route'
+import RoomRoute from './room/index.route'
+import UserRoute from './user/index.route'
 const serveSwaggerClient = swaggerUi.serveFiles(swaggerClientDocument)
 const serveSwaggerAdmin = swaggerUi.serveFiles(swaggerAdminDocument)
 
@@ -28,20 +31,15 @@ const initRoutes = (app: Express) => {
   app.use('/api/client/shop', ShopRoute)
   app.use('/api/client/search', SearchRoute)
   app.use('/api/client/industry', IndustryRoute)
-
-  //? CLIENT
+  app.use('/api/client/categoryTree', CategoryTreeRoute)
+  app.use('/api/client/like', LikeRoute)
+  app.use('/api/client/room', RoomRoute)
+  app.use('/api/client/user', UserRoute)
   // app.use('/api/client/auth', AuthClientRoute)
   // app.use('/api/client/cart', CartRoute)
-  // app.use('/api/client/categoryTree', CategoryTreeRoute)
   // app.use('/api/client/comment', CommentClientRoute)
-  //
-  // app.use('/api/client/like', LikeRoute)
   // app.use('/api/client/order', OrderClientRoute)
-  // app.use('/api/client/search', SearchRoute)
   // app.use('/api/client/post', PostRoute)
-  // app.use('/api/client/shop', ShopRoute)
-  // app.use('/api/client/user', UserRoute)
-  // app.use('/api/client/room', RoomRoute)
 
   //? ADMIN
   // app.use('/api/admin/product', ProductRoute)

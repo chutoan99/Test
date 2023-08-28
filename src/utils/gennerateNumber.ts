@@ -25,3 +25,6 @@ export const generateChatid = () => {
 export const generateRoomid = (userid: any, shopid: any) => {
   return userid + shopid
 }
+export const generatelikeid = () => {
+  return +Math.floor(Math.random() * 100000000000000000)
+}

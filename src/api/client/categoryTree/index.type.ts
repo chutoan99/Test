@@ -1,7 +1,6 @@
-interface HomeCategory {
-  id: number
-  display_name: string
+export interface Category {
   catid: number
+  display_name: string
   parent_catid: number
   name: string
   image: string

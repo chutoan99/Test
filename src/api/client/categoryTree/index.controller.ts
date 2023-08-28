@@ -6,7 +6,7 @@ const CategoriesTreeController = {
   GetAllCategoriesTree: async (req: Request, res: Response) => {
     try {
       const { level } = req.params
-      const response = await CategoriesTreeService.GetAllCategoriesTree(level)
+      const response = await CategoriesTreeService.GetAllCategoriesTree(+level)
       return res.status(200).json(response)
     } catch (error) {
       return internalServerError(res)
@@ -16,7 +16,7 @@ const CategoriesTreeController = {
   GetAllCategoriesParent: async (req: Request, res: Response) => {
     try {
       const { catid } = req.params
-      const response = await CategoriesTreeService.GetAllCategoriesParent(catid)
+      const response = await CategoriesTreeService.GetAllCategoriesParent(+catid)
       return res.status(200).json(response)
     } catch (error) {
       return internalServerError(res)

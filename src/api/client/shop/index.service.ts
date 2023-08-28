@@ -14,7 +14,7 @@ const ShopService = {
       shop_rating, filename, shop_name, liked, ctime, 
       show_free_shipping, is_official_shop, is_service_by_shopee 
     FROM Posts 
-    WHERE shopid = ?`
+    WHERE shopid = ? LIMIT 1`
     try {
       const [response, _] = await db.query(sqlQuery, [shopid])
       let total = 0

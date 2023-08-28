@@ -1,4 +1,6 @@
-export const formatCategory = (categoryTreeList: any[]): any[] => {
+import { Category } from '~/api/client/categoryTree/index.type';
+
+export const formatCategory = (categoryTreeList: Category[]): any[] => {
   const categoryTreeArray = []
   const lastIdx = categoryTreeList.length - 1
 
@@ -6,7 +8,6 @@ export const formatCategory = (categoryTreeList: any[]): any[] => {
     const obj1 = {
       image: categoryTreeList[i]?.image,
       catid: categoryTreeList[i]?.catid,
-      id: categoryTreeList[i]?.id,
       name: categoryTreeList[i]?.name,
       display_name: categoryTreeList[i]?.display_name,
       unselected_image: categoryTreeList[i]?.unselected_image,
@@ -16,7 +17,6 @@ export const formatCategory = (categoryTreeList: any[]): any[] => {
     const obj2 = {
       image: categoryTreeList[i + 1]?.image,
       catid: categoryTreeList[i + 1]?.catid,
-      id: categoryTreeList[i + 1]?.id,
       name: categoryTreeList[i + 1]?.name,
       display_name: categoryTreeList[i + 1]?.display_name,
       unselected_image: categoryTreeList[i + 1]?.unselected_image,

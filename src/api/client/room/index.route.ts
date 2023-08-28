@@ -6,10 +6,6 @@ const router = express.Router()
 
 router.get('/', verifyToken, RoomController.GetAll)
 
-router.get('/:roomid', verifyToken, RoomController.GetOne)
-
 router.post('/', verifyToken, RoomController.Create)
-
-router.delete('/:roomid', verifyToken, RoomController.Delete)
 
 export default router

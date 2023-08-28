@@ -1,97 +1,84 @@
+import connectDatabase from '~/configs/database'
 import { generateRoomid } from '~/utils/gennerateNumber'
-const db = require('../../models/index')
+import { CreateRoomResponse, RoomResponse } from './index.response'
+import { CreateRoom, Room } from './index.type'
 
 const RoomService = {
   GetAll: async (userid: any) => {
+    const pool = connectDatabase.mysql()
+    const db = await pool.getConnection()
+    const sqlQuery = `
+    SELECT roomid, shopid, createdAt, updatedAt 
+    FROM Rooms WHERE userid = ?`
+    const sqlQueryShop = `
+    SELECT 
+      shopid, userid, is_official_shop, item_count, rating_star, name, cover, follower_count,
+      rating_bad, rating_good, rating_normal, status, shop_location, username, portrait, ctime, mtime,
+      response_rate, country, response_time, description, followed, last_active_time, createdAt, updatedAt
+    FROM Shops 
+    WHERE shopid = ?`
     try {
-      const ListRoom = await db.Room.findAll({
-        where: { userid: userid },
-        attributes: {
-          exclude: ['id', 'userid']
-        }
-      })
+      const [ListRoom, _]: [any, any] = await db.query(sqlQuery, [userid])
       const ListRoomResponse: any[] = []
       await Promise.all(
         ListRoom.map(async (item: any) => {
-          const shop = await db.Shop.findOne({
-            where: { shopid: item.shopid },
-            attributes: {
-              exclude: ['id', 'createdAt', 'updatedAt']
-            }
-          })
+          const [shop, _]: [any, any] = await db.query(sqlQueryShop, [item?.shopid])
+          const formatShop = shop.length ? shop[0] : null
           const newItem = {
-            ...item.dataValues,
-            shop_info: shop
+            ...item,
+            shop_info: formatShop
           }
           ListRoomResponse.push(newItem)
         })
       )
-      return {
-        err: ListRoomResponse.length > 0 ? 0 : 1,
-        msg: ListRoomResponse.length > 0 ? 'OK' : 'Failed to get all rooms.',
-        total: ListRoomResponse.length > 0 ? ListRoomResponse.length : 0,
-        response: ListRoomResponse
+
+      let total = 0
+      if (Array.isArray(ListRoomResponse)) {
+        total = ListRoomResponse.length
       }
-    } catch (error) {
-      throw new Error('Failed to get all rooms.')
+
+      const successResponse: RoomResponse = {
+        err: 0,
+        msg: 'OK',
+        total: total,
+        response: ListRoomResponse as Room[]
+      }
+
+      const errorResponse: RoomResponse = {
+        err: 1,
+        msg: 'Error',
+        response: null
+      }
+
+      return ListRoomResponse ? successResponse : errorResponse
+    } catch (err: any) {
+      console.error('Error executing query:', err.message)
+    } finally {
+      db.release()
     }
   },
 
-  GetOne: async (roomid: any) => {
+  Create: async (payload: CreateRoom, userid: any) => {
+    const pool = connectDatabase.mysql()
+    const db = await pool.getConnection()
+    const sqlQuery = `INSERT INTO Rooms (roomid, shopid, userid, createdAt, updatedAt) VALUES (?, ?, ?, ?, ?)`
     try {
-      const roomResponse = await db.Room.findOne({
-        where: { roomid: roomid },
-        attributes: {
-          exclude: ['id', 'userid']
-        }
-      })
-      const shop = await db.Shop.findOne({
-        where: { shopid: roomResponse.shopid },
-        attributes: {
-          exclude: ['id', 'createdAt', 'updatedAt']
-        }
-      })
-      const response = {
-        ...roomResponse.dataValues,
-        shop_info: shop
-      }
-      return {
-        err: response ? 0 : 1,
-        msg: response ? 'OK' : 'Failed to get  rooms.',
-        response: response
-      }
-    } catch (error) {
-      throw new Error('Failed to get  room.')
-    }
-  },
+      const [response, _] = await db.query(sqlQuery, [generateRoomid(+userid, payload.shopid), payload.shopid, userid, new Date(), new Date()])
 
-  Create: async (payload: any, userid: any) => {
-    try {
-      const response = await db.Room.create({
-        roomid: generateRoomid(+userid, payload.shopid),
-        userid: userid,
-        shopid: payload.shopid
-      })
-      return {
-        err: response ? 0 : 1,
-        msg: response ? 'OK' : 'Failed to add room.',
-        response: response
+      const successResponse: CreateRoomResponse = {
+        err: 0,
+        msg: 'OK'
       }
-    } catch (error) {
-      throw new Error('Failed to add room.')
-    }
-  },
+      const errorResponse: CreateRoomResponse = {
+        err: 1,
+        msg: 'Error'
+      }
 
-  Delete: async (roomid: any, userid: any) => {
-    try {
-      const response = await db.Room.destroy({ where: { roomid: roomid, userid: userid } })
-      return {
-        err: response ? 0 : 1,
-        msg: response ? 'OK' : 'Failed to delete room.',
-        response
-      }
-    } catch (error) {
-      throw new Error('Failed to delete roomm.')
+      return response ? successResponse : errorResponse
+    } catch (err: any) {
+      console.error('Error executing query:', err.message)
+    } finally {
+      db.release()
     }
   }
 }
