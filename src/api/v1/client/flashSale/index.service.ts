@@ -1,12 +1,12 @@
 import connectDatabase from '~/configs/database'
-import { ShopMall } from './index.type'
-import { ShopMallResponse } from './index.response'
+import { FlashSale } from './index.type'
+import { FlashSaleResponse } from './index.response'
 
-const ShopMallService = {
+const FlashSaleService = {
   GetAll: async () => {
     const pool = connectDatabase.mysql()
     const db = await pool.getConnection()
-    const sqlQuery = `SELECT id, url, image, shopid, promo_text, createdAt, updatedAt FROM ShopMalls`
+    const sqlQuery = `SELECT itemid, shopid, catid, name, image, price, price_before_discount, stock, historical_sold, discount, shop_rating, filename, liked, is_official_shop, is_service_by_shopee, show_free_shipping, start_time, end_time, createdAt, updatedAt FROM FlashSales`
     try {
       const [response, _] = await db.query(sqlQuery)
       let total = 0
@@ -14,14 +14,14 @@ const ShopMallService = {
         total = response.length
       }
 
-      const successResponse: ShopMallResponse = {
+      const successResponse: FlashSaleResponse = {
         err: 0,
         msg: 'OK',
         total: total,
-        response: response as ShopMall[]
+        response: response as FlashSale[]
       }
 
-      const errorResponse: ShopMallResponse = {
+      const errorResponse: FlashSaleResponse = {
         err: 1,
         msg: 'Error',
         response: null
@@ -36,4 +36,4 @@ const ShopMallService = {
   }
 }
 
-export default ShopMallService
+export default FlashSaleService

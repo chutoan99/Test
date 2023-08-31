@@ -1,5 +1,4 @@
 export interface ShopInfor {
-  id: number
   shopid: number
   userid: string
   is_official_shop: boolean
@@ -15,8 +14,6 @@ export interface ShopInfor {
   shop_location: string
   username: string
   portrait: string
-  ctime: Date
-  mtime: Date
   response_rate: number
   country: string
   response_time: number

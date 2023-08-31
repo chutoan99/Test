@@ -5,12 +5,9 @@ export interface FlashSale {
   name: string
   image: string
   price: number
-  price_min: number
-  price_max: number
+  price_before_discount: number
   stock: number
   historical_sold: number
-  price_min_before_discount: number
-  price_max_before_discount: number
   discount: string
   shop_rating: number
   filename: string

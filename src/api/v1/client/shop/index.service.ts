@@ -49,9 +49,9 @@ const ShopService = {
     const db = await pool.getConnection()
     const sqlQuery = `
       SELECT 
-        id, shopid, userid, is_official_shop, item_count, rating_star, name, cover, follower_count,
-        rating_bad, rating_good, rating_normal, status, shop_location, username, portrait, ctime, mtime,
-        response_rate, country, response_time, description, followed, last_active_time, createdAt, updatedAt
+        shopid, userid, is_official_shop, item_count, rating_star, name, cover, follower_count,
+        rating_bad, rating_good, rating_normal, status, shop_location, username, portrait, response_rate, 
+        country, response_time, description, followed, last_active_time, createdAt, updatedAt
       FROM Shops 
       WHERE shopid = ?`
 

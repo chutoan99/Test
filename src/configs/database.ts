@@ -6,11 +6,11 @@ dotenv.config()
 const connectDatabase = {
   mysql: () => {
     const pool = mysql.createPool({
-      host: 'containers-us-west-32.railway.app',
-      user: 'root',
-      password: 'arfsoG2vUMDCXg7xQDLF',
-      database: 'railway',
-      port: 6917,
+      host: process.env.DB_HOST,
+      user: process.env.DB_USERNAME,
+      password: process.env.DB_PASSWORD,
+      database: process.env.DB_NAME,
+      port: parseInt(process.env.DB_PORT!),
       connectionLimit: 10
     })
     return pool

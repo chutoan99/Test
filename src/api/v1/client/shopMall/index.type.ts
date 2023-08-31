@@ -1,5 +1,4 @@
 export interface ShopMall {
-  id: number
   url: string
   image: string
   shopid: number

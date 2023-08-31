@@ -1,5 +1,6 @@
 import { Server } from 'socket.io'
-import ChatService from '~/api/client/chat/index.server'
+import ChatService from '~/api/v1/client/chat/index.server'
+
 const configSocketIO = (server: any) => {
   const io = new Server(server, {
     cors: { origin: '*' }

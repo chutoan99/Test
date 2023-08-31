@@ -1,4 +1,4 @@
-import { Category } from '~/api/client/categoryTree/index.type';
+import { Category } from '~/api/v1/client/categoryTree/index.type'
 
 export const formatCategory = (categoryTreeList: Category[]): any[] => {
   const categoryTreeArray = []
